@@ -21,12 +21,13 @@ build_script:
       cd $env:APPVEYOR_BUILD_FOLDER
       cd .\rabbitmq\windows\3.6.12\
       docker build -t $env:DOCKER_IMAGE_NAME .
+      docker images
 
 test_script:
   - ps: |
       $cid = docker run -d $env:DOCKER_IMAGE_NAME
       $hostip = docker inspect -f "{{ .NetworkSettings.Networks.nat.IPAddress }}" $cid
-      Start-Sleep -s 20
+      Start-Sleep -s 30
       curl "http://${hostip}:15672" -UseBasicParsing
 
 deploy_script:
