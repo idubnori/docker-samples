@@ -20,7 +20,7 @@ build_script:
   - ps: |
       cd $env:APPVEYOR_BUILD_FOLDER
       cd .\rabbitmq\windows\3.6.12\
-      docker build -t %DOCKER_IMAGE_NAME% .
+      docker build -t $env:DOCKER_IMAGE_NAME .
 
 test_script:
   - ps: |
