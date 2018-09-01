@@ -3,9 +3,9 @@ version: '{build}'
 image: Visual Studio 2017
 
 environment:
-#  DOCKER_USER: idubnori
-#  DOCKER_PASS:
-#    secure: HASfuLeqW86zydzpb7/5Zg==
+  DOCKER_USER: idubnori
+  DOCKER_PASS:
+    secure: HASfuLeqW86zydzpb7/5Zg==
   DOCKER_IMAGE_NAME: idubnori/rabbitmq-windows:3.6.9
 
 init:
@@ -32,5 +32,5 @@ test_script:
       curl "http://${hostip}:15672" -s --retry 10
 
 deploy_script:
-#  - docker login -u %DOCKER_USER% -p %DOCKER_PASS%
-#  - docker push %DOCKER_IMAGE_NAME%
+  - docker login -u %DOCKER_USER% -p %DOCKER_PASS%
+  - docker push %DOCKER_IMAGE_NAME%
