@@ -2,7 +2,7 @@
 
 # Setup shared variables
 ARG ERLANG_VERSION=21.0.1
-ARG RABBITMQ_VERSION=3.6.9
+ARG RABBITMQ_VERSION=3.7.7
 
 # Use server core to support erlang install
 FROM microsoft/windowsservercore as source
