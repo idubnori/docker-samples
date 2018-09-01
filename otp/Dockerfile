@@ -1,0 +1,22 @@
+FROM microsoft/windowsservercore as root
+
+ENV erlang_download_url="http://erlang.org/download/otp_win64_20.3.exe" \
+    ERLANG_HOME=c:\\erlang
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+# download and install erlang using silent install option, and remove installer when done
+RUN Invoke-WebRequest -Uri $env:erlang_download_url -OutFile erlang_install.exe ; \
+    Start-Process -Wait -FilePath .\erlang_install.exe -ArgumentList /S, /D=$env:ERLANG_HOME ; \
+    Remove-Item -Force erlang_install.exe
+
+FROM microsoft/nanoserver
+
+ENV HOMEDRIVE=c:\\ \
+    HOMEPATH=Users\\ContainerUser \
+    ERLANG_HOME=c:\\erlang
+
+COPY --from=root c:\\erlang c:\\erlang
+COPY .erlang.cookie c:\\windows
+
+RUN icacls c:\windows\.erlang.cookie /grant %USERNAME%:F
