@@ -27,9 +27,8 @@ test_script:
   - ps: |
       $cid = docker run -d $env:DOCKER_IMAGE_NAME
       $hostip = docker inspect -f "{{ .NetworkSettings.Networks.nat.IPAddress }}" $cid
-      echo "hostip: /${hostip}"
-      Start-Sleep -s 30
-      curl "http://${hostip}:15672" -UseBasicParsing
+      echo "hostip:${hostip}"
+      curl "http://${hostip}:15672" -UseBasicParsing --retry 10 --retry-delay 10
 
 deploy_script:
 #  - docker login -u %DOCKER_USER% -p %DOCKER_PASS%
