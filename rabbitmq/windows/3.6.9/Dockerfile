@@ -39,7 +39,8 @@ ENV ERLANG_HOME=c:\erlang `
     RABBITMQ_HOME=c:\rabbitmq `
     RABBITMQ_BASE=c:\data `
     ERLANG_VERSION=$ERLANG_VERSION `
-    RABBITMQ_VERSION=$RABBITMQ_VERSION
+    RABBITMQ_VERSION=$RABBITMQ_VERSION `
+	HOMEDRIVE=c:
 
 # setup persistent folders
 VOLUME $RABBITMQ_BASE
@@ -101,7 +102,8 @@ WORKDIR $RABBITMQ_HOME\sbin
 EXPOSE 4369 5672 5671 25672 15672 61613 61614 1883 8883 15674 15675
 
 # turn on management plugin
-RUN .\rabbitmq-plugins.bat enable rabbitmq_management --offline
+RUN [Environment]::SetEnvironmentVariable('HOMEDRIVE', $env:HOMEDRIVE) ; `
+    .\rabbitmq-plugins.bat enable rabbitmq_management --offline
 
 # run external command when container starts to allow for additional setup
 CMD .\rabbitmq-server.bat
