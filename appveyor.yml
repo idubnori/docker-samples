@@ -17,6 +17,7 @@ init:
   - ps: |
       cinst curl -y --no-progress
       sal curl (Join-Path $env:ChocolateyInstall "bin\curl.exe") -O AllScope
+      curl "http://google.com" -f --retry 10
 
 build_script:
   - ps: |
@@ -29,7 +30,7 @@ test_script:
   - ps: |
       $cid = docker run -d $env:DOCKER_IMAGE_NAME
       $hostip = docker inspect -f "{{ .NetworkSettings.Networks.nat.IPAddress }}" $cid
-      curl "http://${hostip}:15672" -s --retry 10
+      curl "http://${hostip}:15672" -f --retry 10
 
 deploy_script:
   - docker login -u %DOCKER_USER% -p %DOCKER_PASS%
