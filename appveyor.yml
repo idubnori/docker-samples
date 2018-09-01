@@ -9,8 +9,8 @@ environment:
   DOCKER_IMAGE_NAME: idubnori/rabbitmq-windows:3.6.9
 
 init:
-  - ps: gcim Win32_Processor | % { "$($_.NumberOfCores) cores" }
-  - ps: gcim Win32_OperatingSystem | % { "$([int]($_.TotalVisibleMemorySize/1mb)) Gb" }
+#  - ps: gcim Win32_Processor | % { "$($_.NumberOfCores) cores" }
+#  - ps: gcim Win32_OperatingSystem | % { "$([int]($_.TotalVisibleMemorySize/1mb)) Gb" }
   - ps: docker version
   - ps: docker info
   - ps: docker images
@@ -27,11 +27,12 @@ build_script:
 
 test_script:
   - ps: |
-      $cid = docker run -d $env:DOCKER_IMAGE_NAME
-      $hostip = docker inspect -f "{{ .NetworkSettings.Networks.nat.IPAddress }}" $cid
-      Start-Sleep -s 45
-      curl "http://${hostip}:15672" -s -f --connect-timeout 30
+       docker run -it $env:DOCKER_IMAGE_NAME
+#      $cid = docker run -d $env:DOCKER_IMAGE_NAME
+#      $hostip = docker inspect -f "{{ .NetworkSettings.Networks.nat.IPAddress }}" $cid
+#      Start-Sleep -s 45
+#      curl "http://${hostip}:15672" -s -f --connect-timeout 30
 
 deploy_script:
-  - docker login -u %DOCKER_USER% -p %DOCKER_PASS%
-  - docker push %DOCKER_IMAGE_NAME%
+#  - docker login -u %DOCKER_USER% -p %DOCKER_PASS%
+#  - docker push %DOCKER_IMAGE_NAME%
