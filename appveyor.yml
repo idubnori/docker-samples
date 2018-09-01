@@ -7,7 +7,6 @@ environment:
 #  DOCKER_PASS:
 #    secure: HASfuLeqW86zydzpb7/5Zg==
   DOCKER_IMAGE_NAME: idubnori/rabbitmq-windows:3.6.9
-#$(APPVEYOR_REPO_BRANCH)-$(APPVEYOR_BUILD_NUMBER)
 
 init:
   - ps: gcim Win32_Processor | % { "$($_.NumberOfCores) cores" }
@@ -16,10 +15,8 @@ init:
   - ps: docker info
   - ps: docker images
   - ps: |
-      cinst curl -y
+      cinst curl -y --no-progress
       sal curl (Join-Path $env:ChocolateyInstall "bin\curl.exe") -O AllScope
-      gal curl
-      curl "http://google.com" -s --retry 10
 
 build_script:
   - ps: |
@@ -32,8 +29,7 @@ test_script:
   - ps: |
       $cid = docker run -d $env:DOCKER_IMAGE_NAME
       $hostip = docker inspect -f "{{ .NetworkSettings.Networks.nat.IPAddress }}" $cid
-      echo "hostip:${hostip}"
-      curl "http://${hostip}:15672" --retry 10
+      curl "http://${hostip}:15672" -s --retry 10
 
 deploy_script:
 #  - docker login -u %DOCKER_USER% -p %DOCKER_PASS%
