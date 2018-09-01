@@ -1,7 +1,7 @@
 # escape=`
 
 # Setup shared variables
-ARG ERLANG_VERSION=19.3
+ARG ERLANG_VERSION=21.0.1
 ARG RABBITMQ_VERSION=3.6.9
 
 # Use server core to support erlang install
